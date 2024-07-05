@@ -11,7 +11,7 @@
   "dependencies": {
     "bootstrap": "^5.3.3",
     "lit": "^3.1.2",
-    "monadyssey": "^1.5.3"
+    "monadyssey": "^1.5.4"
   },
   "devDependencies": {
     "typescript": "^5.5.3",

@@ -2,7 +2,7 @@ import {property} from "lit/decorators.js";
 import {html, LitElement} from "lit";
 import {CurrentConditions} from "./types";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {IO} from "monadyssey";
+import {IO, Policy, Schedule} from "monadyssey";
 import {
   getCurrentLocation,
   getCurrentWeatherData,
@@ -19,10 +19,24 @@ export class WeatherConditions extends LitElement {
   }
 
   override async firstUpdated(): Promise<void> {
-    await this.getCurrentWeather().fold(
-      (e) => console.error(e.message),
-      (conditions) => this.conditions = conditions
-    );
+    const policy: Policy = {
+      recurs: 3,
+      factor: 1.2,
+      delay: 1000,
+      timeout: 3000
+    };
+
+    const scheduler = new Schedule(policy);
+
+    await scheduler
+      .retryIf(
+        this.getCurrentWeather(),
+        (e) => e.retryable,
+        (e) => new WeatherRetrievalError(e.message)
+      ).fold(
+        (e: ApplicationError) => console.error(e.message),
+        (conditions: CurrentConditions) => this.conditions = conditions
+      );
   }
 
   getCurrentWeather = (): IO<ApplicationError, CurrentConditions> =>

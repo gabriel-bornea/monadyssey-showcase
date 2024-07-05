@@ -1,21 +1,22 @@
-class UserLocationError {
-  message: string;
+class GenericError {
+  constructor(public readonly message: string, public readonly retryable: boolean) {}
+}
+
+class UserLocationError extends GenericError {
   constructor(message: string) {
-    this.message = message;
+    super(message, true);
   }
 }
 
-class InvalidLocationError {
-  message: string;
+class InvalidLocationError extends GenericError {
   constructor(message: string) {
-    this.message = message;
+    super(message, false);
   }
 }
 
-class WeatherRetrievalError {
-  message: string;
+class WeatherRetrievalError extends GenericError {
   constructor(message: string) {
-    this.message = message;
+    super(message, true);
   }
 }
 

@@ -7,7 +7,7 @@ import {
   getCurrentLocation,
   getCurrentWeatherData,
   getLatitudeAndLongitude,
-  setCurrentConditions
+  mapToConditions
 } from "./03-get-current-weather";
 
 export class WeatherConditions extends LitElement {
@@ -45,7 +45,7 @@ export class WeatherConditions extends LitElement {
       const [latitude, longitude] = await bind(getLatitudeAndLongitude(location));
       const weather = await bind(getCurrentWeatherData(latitude, longitude));
 
-      return setCurrentConditions(location, weather);
+      return mapToConditions(location, weather);
     });
 
   override render = () => html`

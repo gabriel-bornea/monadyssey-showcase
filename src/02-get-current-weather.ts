@@ -48,7 +48,7 @@ const getCurrentWeatherData = async (latitude: Number, longitude: Number): Promi
 }
 
 // @ts-ignore
-const setCurrentConditions = (location: CurrentLocation, weather: Weather): CurrentConditions => {
+const mapToConditions = (location: CurrentLocation, weather: Weather): CurrentConditions => {
   return {
     city: location.city,
     country: location.country,

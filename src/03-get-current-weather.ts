@@ -22,7 +22,7 @@ export const getCurrentWeatherData = (latitude: Number, longitude: Number): IO<A
     (e) => new WeatherRetrievalError(e instanceof Error ? e.message : "Failed to retrieve current weather conditions")
   );
 
-export const setCurrentConditions = (location: CurrentLocation, weather: Weather): CurrentConditions => {
+export const mapToConditions = (location: CurrentLocation, weather: Weather): CurrentConditions => {
   return {
     city: location.city,
     country: location.country,

@@ -1,8 +1,9 @@
 {
-  "name": "rwa",
-  "private": true,
+  "name": "monadyssey-showcase",
+  "private": false,
   "version": "0.0.1",
   "type": "module",
+  "author": "Gabriel Bornea",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",

@@ -9,6 +9,7 @@ import {
   getLatitudeAndLongitude,
   mapToConditions
 } from "./03-get-current-weather";
+import {ApplicationError, WeatherRetrievalError} from "./error";
 
 export class WeatherConditions extends LitElement {
 

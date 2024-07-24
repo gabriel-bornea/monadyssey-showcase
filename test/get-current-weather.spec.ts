@@ -239,17 +239,23 @@ describe("Get weather conditions", () => {
         ]
       );
 
-      const eff = await getCurrentLocation()
-        .flatMap((location) => getLatitudeAndLongitude(location)
-          .flatMap(([lat, lon]) => getCurrentWeatherData(lat, lon)
-            .map((weather) => mapToConditions(location, weather)))).runAsync();
+      const eff = (): IO<ApplicationError, CurrentConditions> =>
+        IO.forM(async (bind) => {
+          const location = await bind(getCurrentLocation());
+          const [latitude, longitude] = await bind(getLatitudeAndLongitude(location));
+          const weather = await bind(getCurrentWeatherData(latitude, longitude));
 
-      switch (eff.type) {
+          return mapToConditions(location, weather);
+        });
+
+      const result = await eff().runAsync();
+
+      switch (result.type) {
         case "Err":
-          expect(eff.error.message).toContain("Request failed with status 500");
+          expect(result.error.message).toContain("Request failed with status 500");
           break;
         case "Ok":
-          expect(eff.value.temperature).toBe(0.0);
+          expect(result.value.temperature).toBe(0.0);
           break;
       }
     });

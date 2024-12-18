@@ -1,13 +1,12 @@
 import {IO} from "monadyssey";
+import {HttpClient} from "monadyssey-fetch";
 import {CurrentConditions, CurrentLocation, Weather} from "./types";
 import {ApplicationError, InvalidLocationError, UserLocationError, WeatherRetrievalError} from "./error";
-import {HttpClient} from "./http-client";
 
 export const getCurrentLocation = (): IO<ApplicationError, CurrentLocation> =>
-  IO.of(
-    async () => await HttpClient.request('https://ipinfo.io/json'),
-    (e) => new UserLocationError(e instanceof Error ? e.message : "Failed to retrieve user location")
-  );
+  HttpClient
+    .get('https://ipinfo.io/json', {credentials: 'omit'})
+    .mapError((e) => new UserLocationError(e.message));
 
 export const getLatitudeAndLongitude = (location: CurrentLocation): IO<ApplicationError, [number, number]> =>
   IO.ofSync(
@@ -19,10 +18,9 @@ export const getLatitudeAndLongitude = (location: CurrentLocation): IO<Applicati
   );
 
 export const getCurrentWeatherData = (latitude: Number, longitude: Number): IO<ApplicationError, Weather> =>
-  IO.of(
-    async () => await HttpClient.request(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`),
-    (e) => new WeatherRetrievalError(e instanceof Error ? e.message : "Failed to retrieve current weather conditions")
-  );
+  HttpClient
+    .get(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`, {credentials: 'omit'})
+    .mapError(e => new WeatherRetrievalError(e.message));
 
 export const mapToConditions = (location: CurrentLocation, weather: Weather): CurrentConditions => {
   return {

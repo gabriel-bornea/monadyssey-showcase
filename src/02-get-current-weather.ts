@@ -1,8 +1,8 @@
 import {CurrentConditions, CurrentLocation, Weather} from "./types";
-import {HttpClient} from "./http-client";
+import {FetchWrapper} from "./fetch-wrapper";
 
 // @ts-ignore
-const getCurrentLocation = async (): Promise<CurrentLocation> => HttpClient.request("https://ipinfo.io/json")
+const getCurrentLocation = async (): Promise<CurrentLocation> => FetchWrapper.request("https://ipinfo.io/json")
 
 // @ts-ignore
 const getLatitudeAndLongitude = (location: CurrentLocation): Promise<[number, number]> => {
@@ -24,7 +24,7 @@ const getLatitudeAndLongitude = (location: CurrentLocation): Promise<[number, nu
 
 // @ts-ignore
 const getCurrentWeatherData = async (latitude: Number, longitude: Number): Promise<Weather> =>
-  HttpClient.request(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`)
+  FetchWrapper.request(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current_weather=true`)
 
 // @ts-ignore
 const mapToConditions = (location: CurrentLocation, weather: Weather): CurrentConditions => {

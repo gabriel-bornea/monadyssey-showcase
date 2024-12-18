@@ -1,4 +1,4 @@
-export namespace HttpClient {
+export namespace FetchWrapper {
   export const request = async <A>(url: string): Promise<A> => {
     try {
       const response = await fetch(url);

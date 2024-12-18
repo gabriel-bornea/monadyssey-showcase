@@ -51,7 +51,7 @@ describe("Get weather conditions", () => {
 
       expect(IO.isErr(eff)).toBe(true);
       const error = (eff as Err<ApplicationError>).error;
-      expect(error.message).toContain("Request failed with status 500");
+      expect(error.message).toContain("Request to https://ipinfo.io/json failed with status 500 and message Internal Server Error");
     });
   });
 
@@ -146,7 +146,7 @@ describe("Get weather conditions", () => {
 
       expect(IO.isErr(eff)).toBe(true);
       const error = (eff as Err<ApplicationError>).error;
-      expect(error.message).toContain("Request failed with status 500");
+      expect(error.message).toContain("Request to https://api.open-meteo.com/v1/forecast?latitude=40.7128&longitude=-74.006&current_weather=true failed with status 500 and message Internal Server Error");
     });
   })
 
@@ -252,7 +252,7 @@ describe("Get weather conditions", () => {
 
       switch (result.type) {
         case "Err":
-          expect(result.error.message).toContain("Request failed with status 500");
+          expect(result.error.message).toContain("Request to https://api.open-meteo.com/v1/forecast?latitude=12.34&longitude=56.78&current_weather=true failed with status 500 and message Internal Server Error");
           break;
         case "Ok":
           expect(result.value.temperature).toBe(0.0);
